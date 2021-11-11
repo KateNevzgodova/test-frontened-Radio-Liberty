@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --open --config ./config/webpack.common.js --mode=development",
+    "start": "webpack serve --open --config ./config/webpack.common.js --mode=development --hot",
     "build": "webpack --config ./config/webpack.common.js --mode=production",
     "test": "echo \"Error: no test specified\" && exit 1"
 },

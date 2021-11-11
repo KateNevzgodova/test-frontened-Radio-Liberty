@@ -25,6 +25,10 @@ module.exports = {
         },
         compress: true,
         port: 5000,
+
+        open:true,
+        liveReload: true,
+        hot: true,
     },
     optimization: {
         usedExports: true

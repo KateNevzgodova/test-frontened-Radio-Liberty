@@ -3,3 +3,52 @@
     padding: 0;
     box-sizing: border-box;
 }
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 960px;
+    padding: 20px;
+    text-align: center;
+    margin: auto;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    align-items: center;
+    
+    .error{
+        color: red;
+        margin: 10px;
+        font-style: italic;
+    }
+    #tags{
+        text-align: start;
+
+        li{
+            cursor: pointer;
+            &:hover{
+                color: salmon;
+                &::marker{
+                    content: 'X ';
+                    color: salmon;
+                }
+            }
+        }
+
+    }
+    label{
+        margin: 10px;
+
+        input{
+            padding: 3px;
+            margin-left: 8px;
+            border-radius: 3px;
+            border: 1px solid black;
+            padding-left: 5px;
+        }
+
+        button{
+            margin-left: 5px;  
+            padding: 2px 6px;
+            cursor: pointer;
+        }
+    }
+}
