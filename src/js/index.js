@@ -4,24 +4,15 @@ window.addEventListener ("load", function(){
     
     renderList();
     
-    document.getElementById('button_add').addEventListener('click', function(){
-        const inputValue = document.getElementById('add_tag').value;
-        if(inputValue){
-            console.log(inputValue);
-            const resultTags = hashParse();
-            const newHash = `#tags=${resultTags.tags.join(',')},${inputValue}`;
+    document.getElementById('button_add').addEventListener('click',addNewHash);
 
-            const url = window.location;
-            url.hash = newHash;
-            document.getElementById('add_tag').value='';
+    document.getElementById('add_tag').addEventListener('keydown',function (event) {
+        if (event.keyCode === 13){
+            addNewHash();
         }
-        
-    })
-    
-    
+    }); 
    
     window.addEventListener('hashchange',function(){
-        console.log('hash changed!');
         clear();
         renderList();
     })
@@ -32,23 +23,49 @@ function clear(){
     document.getElementById('tags').innerHTML='';
 }
 function renderList(){
+
     const resultTags = hashParse();
 
     document.querySelector('.error').innerText=resultTags.errorText;
+
     const list =document.getElementById('tags');
-    resultTags.tags.forEach((item)=>{
+
+    resultTags.tags.forEach((item,index)=>{
         let elementList = document.createElement('li');
+        elementList.addEventListener('click',()=>{deleteHash(resultTags.tags, index)});
         elementList.innerText = item;
         list.appendChild(elementList);
-    }
-    );
+    });
+
+}
+
+function deleteHash(tags,currentIndex){
+    const newTags = tags.filter((_,indexTag)=>{
+        if (indexTag!=currentIndex){
+            return true;
+        }
+        return false;
+    })             
+    const newHash = `#tags=${newTags.join(',')}`;
+    const url = window.location;
+    url.hash = newHash;
+}
+function addNewHash(){
+    const inputValue = document.getElementById('add_tag').value;
+    if(inputValue){
+        
+        const resultTags = hashParse();
+        const newHash = `#tags=${resultTags.tags.join(',')}${resultTags.tags.length>0 ? ',' : ''}${inputValue}`;
+        const url = window.location;
+        url.hash = newHash;
+        document.getElementById('add_tag').value='';
+    }    
 }
 
 function hashParse(){
         
      const url = window.location;
-    console.log(url.hash);
-    const {hash} = url;
+     const {hash} = url;
 
     // 1 case - without hash
     if (!hash){
@@ -60,17 +77,14 @@ function hashParse(){
 
     // 2 case - with wrong hash
     const parseParams = hash.split('=');
-    console.log(parseParams);
+   
     if(parseParams[0]!=='#tags'){
-         console.log('wrong hash!');
          return {
              errorText:'Wrong hash!',
              tags:[]
         }
     } else if(!parseParams[1]){
         // 3 case - with empty params
-         console.log('empty tags!');
-
          return {
             errorText:'Empty tags!',
             tags:[]
